@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ParseIntPipe } from '@nestjs/common';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { UpdateUserDTO } from './dto/update-user.dto copy';
 
@@ -12,13 +12,13 @@ export class UserService {
     return CreateUserDTO;
   }
 
-  update(UpdateUserDTO: UpdateUserDTO, param: { userId: number }) {
-    return { UpdateUserDTO, param };
+  update(UpdateUserDTO: UpdateUserDTO, userId: number) {
+    return { UpdateUserDTO, userId };
   }
-  getOne(param: { userId: number }) {
-    return param;
+  getOne(userId: number) {
+    return userId;
   }
-  delete(param: { userId: number }) {
-    return param;
+  delete(userId: number) {
+    return userId;
   }
 }
