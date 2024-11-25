@@ -1,24 +1,34 @@
 import { Injectable, ParseIntPipe } from '@nestjs/common';
-import { CreateUserDTO } from './dto/create-user.dto';
-import { UpdateUserDTO } from './dto/update-user.dto copy';
+import { createUserDto } from './dto/create-user.dto';
+import { updateUserDto } from './dto/update-user.dto copy';
+import { User } from './entity/user.entity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class UserService {
+  constructor(
+    @InjectRepository(User)
+    private userRespository: Repository<User>,
+  ) {}
   get() {
-    return { name: 'Pawan', email: 'pawan@beyondhimalayatech.com.au' };
+    return this.userRespository.find();
   }
 
-  create(CreateUserDTO: CreateUserDTO) {
-    return CreateUserDTO;
+  create(createUserDto: createUserDto) {
+    return this.userRespository.save(createUserDto);
   }
 
-  update(UpdateUserDTO: UpdateUserDTO, userId: number) {
-    return { UpdateUserDTO, userId };
+  update(updateUserDto: updateUserDto, userId: number) {
+    return this.userRespository.update(userId, updateUserDto);
   }
-  getOne(userId: number) {
-    return userId;
+  getOne(id: number) {
+    return this.userRespository.findOne({ where: { id } });
+  }
+  getByEmail(email: string) {
+    return this.userRespository.findOne({ where: { email } });
   }
   delete(userId: number) {
-    return userId;
+    return this.userRespository.delete(userId);
   }
 }
